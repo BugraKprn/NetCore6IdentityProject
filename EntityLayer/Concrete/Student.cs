@@ -9,12 +9,14 @@ namespace EntityLayer.Concrete
 {
     public class Student : IdentityUser<int>
     {
-        public string Name { get; set; }
-        public string SurName { get; set; }
-        public string ImageUrl { get; set; }
-        public string Adresss { get; set; }
+        public string? Name { get; set; }
+        public string? SurName { get; set; }
+        public string? Gender { get; set; }
+        public string? StudentNumber { get; set; }
+        public string? ImageUrl { get; set; }
+        public string? Adresss { get; set; }
         public int ConfirmCode { get; set; }
-        public Classroom Classroom { get; set; }
-        public StudentAccount StudentAccount { get; set; }
+        public Classroom? Classroom { get; set; }
+        public StudentAccount? StudentAccount { get; set; }
     }
 }

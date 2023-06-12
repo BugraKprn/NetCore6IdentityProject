@@ -18,5 +18,14 @@ namespace DataAccessLayer.Concrete
 
         public DbSet<Classroom> Classrooms { get; set; }
         public DbSet<StudentAccount> StudentAccounts { get; set; }
+        public DbSet<Lesson> Lessons { get; set; }
+        public DbSet<LessonSubject> LessonSubjects { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<ClassroomLesson>()
+                .HasKey(x => new { x.LessonId, x.ClassroomId });
+            base.OnModelCreating(builder);
+        }
     }
 }

@@ -73,6 +73,68 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Classrooms");
                 });
 
+            modelBuilder.Entity("EntityLayer.Concrete.ClassroomLesson", b =>
+                {
+                    b.Property<int>("LessonId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ClassroomId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LessonId", "ClassroomId");
+
+                    b.HasIndex("ClassroomId");
+
+                    b.ToTable("ClassroomLesson");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.Lesson", b =>
+                {
+                    b.Property<int>("LessonId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LessonId"), 1L, 1);
+
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("LessonId");
+
+                    b.ToTable("Lessons");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.LessonSubject", b =>
+                {
+                    b.Property<int>("LessonSubjectId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LessonSubjectId"), 1L, 1);
+
+                    b.Property<int>("LessonId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SubjectIcon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubjectName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("LessonSubjectId");
+
+                    b.HasIndex("LessonId");
+
+                    b.ToTable("LessonSubjects");
+                });
+
             modelBuilder.Entity("EntityLayer.Concrete.Student", b =>
                 {
                     b.Property<int>("Id")
@@ -85,10 +147,9 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Adresss")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ClassroomId")
+                    b.Property<int?>("ClassroomId")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -105,8 +166,10 @@ namespace DataAccessLayer.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -116,7 +179,6 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
@@ -139,8 +201,10 @@ namespace DataAccessLayer.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("StudentNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SurName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -291,13 +355,41 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("EntityLayer.Concrete.ClassroomLesson", b =>
+                {
+                    b.HasOne("EntityLayer.Concrete.Classroom", "Classroom")
+                        .WithMany("Lessons")
+                        .HasForeignKey("ClassroomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EntityLayer.Concrete.Lesson", "Lesson")
+                        .WithMany("Classrooms")
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Classroom");
+
+                    b.Navigation("Lesson");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.LessonSubject", b =>
+                {
+                    b.HasOne("EntityLayer.Concrete.Lesson", "Lesson")
+                        .WithMany("Subjects")
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lesson");
+                });
+
             modelBuilder.Entity("EntityLayer.Concrete.Student", b =>
                 {
                     b.HasOne("EntityLayer.Concrete.Classroom", "Classroom")
                         .WithMany("Students")
-                        .HasForeignKey("ClassroomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClassroomId");
 
                     b.Navigation("Classroom");
                 });
@@ -366,13 +458,21 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("EntityLayer.Concrete.Classroom", b =>
                 {
+                    b.Navigation("Lessons");
+
                     b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.Lesson", b =>
+                {
+                    b.Navigation("Classrooms");
+
+                    b.Navigation("Subjects");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Student", b =>
                 {
-                    b.Navigation("StudentAccount")
-                        .IsRequired();
+                    b.Navigation("StudentAccount");
                 });
 #pragma warning restore 612, 618
         }

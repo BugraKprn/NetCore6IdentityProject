@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+@await Html.PartialAsync("~/Views/StudentLayout/PartialHead.cshtml")
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <!-- Site wrapper -->
+    <div class="wrapper">
+        <!-- Navbar -->
+        @await Html.PartialAsync("~/Views/StudentLayout/PartialNavbar.cshtml")
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        @await Html.PartialAsync("~/Views/StudentLayout/PartialSidebar.cshtml")
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            @RenderBody()
+        </div>
+        <!-- /.content-wrapper -->
+        @await Html.PartialAsync("~/Views/StudentLayout/PartialFooter.cshtml")
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+    </div>
+    <!-- ./wrapper -->
+    @await Html.PartialAsync("~/Views/StudentLayout/PartialScript.cshtml")
+
+</body>
+</html>

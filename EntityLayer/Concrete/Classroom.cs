@@ -14,5 +14,6 @@ namespace EntityLayer.Concrete
         public string Year { get; set; }
         public string Class { get; set; }
         public ICollection<Student> Students { get; set; }
+        public ICollection<ClassroomLesson> Lessons { get; set; }
     }
 }
