@@ -24,6 +24,7 @@ namespace UI.Controllers
         {
             var values = await _userManager.FindByNameAsync(User.Identity.Name);
             ViewBag.v = values.Id;
+
             StudentEditDto studentEditDto = new StudentEditDto();
             studentEditDto.StudentNumber = values.StudentNumber;
             studentEditDto.Address = values.Adresss;
